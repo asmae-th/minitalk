@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 20:14:24 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/05/09 21:27:57 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/05/10 10:27:59 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,43 @@ int	ft_atoi(char *str)
 	return (reslt * sing);
 }
 
-void	pass_bit_server(pid_t pid, int bit)
+void	pass_bit_server(pid_t pid, char c)
 {
-	if(bit == 0)
+	// if(bit == 0)
+	// {
+	// 	kill(pid, SIGUSR1);
+	// }
+	// else if(bit == 1)
+	// {
+	// 	kill(pid, SIGUSR2);
+	// }
+	int bit;
+	int j = 0;
+	while (j < 8)
 	{
-		kill(pid, SIGUSR1);
+		bit = (c >> j) & 1;
+		printf("%d\n", bit);
+		if(bit == 0)
+		{
+			kill(pid, SIGUSR1);
+		}
+		else if(bit == 1)
+		{
+			kill(pid, SIGUSR2);
+		}
+		usleep(100);
+		j++;
 	}
-	else if(bit == 1)
-	{
-		kill(pid, SIGUSR2);
-	}
+	
 }
 
 int main(int ac, char **av) 
 {
 	pid_t pid;
 	char *msg;
-	int	bit;
+	//int	bit;
 	int i;
-	int	j;
+	//int	j;
 	if (ac == 3)
 	{
 		pid = ft_atoi(av[1]);
@@ -65,14 +83,8 @@ int main(int ac, char **av)
 		i = 0;
 		while (msg[i])
 		{
-			j = 0;
-			while (j < 8)
-			{
-				bit = (msg[i] >> j) & 1;
-				//printf("%d", bit);
-				pass_bit_server(pid, bit);
-				j++;
-			}
+			pass_bit_server(pid,msg[i]);
+			
 			i++;
 		}
 	}
