@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 20:14:24 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/05/10 10:27:59 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/05/10 12:05:22 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,7 @@ int	ft_atoi(char *str)
 
 void	pass_bit_server(pid_t pid, char c)
 {
-	// if(bit == 0)
-	// {
-	// 	kill(pid, SIGUSR1);
-	// }
-	// else if(bit == 1)
-	// {
-	// 	kill(pid, SIGUSR2);
-	// }
+
 	int bit;
 	int j = 0;
 	while (j < 8)
@@ -68,25 +61,35 @@ void	pass_bit_server(pid_t pid, char c)
 	}
 	
 }
-
+// int ft_strlen(char *s)
+// {
+// 	int i = 0;
+// 	while (s[i])
+// 	{
+// 		i++;
+// 	}
+// 	return(i);
+// }
 int main(int ac, char **av) 
 {
 	pid_t pid;
 	char *msg;
-	//int	bit;
 	int i;
 	//int	j;
+	
 	if (ac == 3)
 	{
 		pid = ft_atoi(av[1]);
 		msg = av[2];
 		i = 0;
-		while (msg[i])
+		//j = ft_strlen(av[2]);
+		while (msg[i])//i <= j)
 		{
 			pass_bit_server(pid,msg[i]);
 			
 			i++;
 		}
+		pass_bit_server(pid,'\0');
 	}
 } 
  

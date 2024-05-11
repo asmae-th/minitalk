@@ -6,12 +6,16 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 11:25:29 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/05/10 10:46:39 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:10:51 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
+#include <stdlib.h>
 int ft_sqrt(int a, int b)
 {
 	if(a == 1 || b == 0)
@@ -26,6 +30,7 @@ int	ft_binary_to_decimal(int bit, int count)
 	return (c);
 }
 
+
 void handler(int signal)
 {
 	static	int sum = 0;
@@ -37,24 +42,18 @@ void handler(int signal)
 			bit = 0;
 		else if (signal == SIGUSR2)
 			bit = 1;
-		
-		//printf("bit == %d\n", bit);
-		//printf("count == %d\n", count);
 		sum += ft_binary_to_decimal(bit, count);
 		count++;
 	if(count == 8)
 	{
-		printf("%c", sum);
+		write(1, &sum, 1);
 		if(sum == '\0')
-			{
-				printf("\n");
-			}
+			write(1, "\n", 1);
 		count = 0;
 		sum = 0;
 	}
 	
 }
-
 
 int main()
 {
@@ -64,12 +63,11 @@ int main()
 	sa.sa_flags = 0;
 
 	printf("Je suis le serveur, mon PID est : %d\n", getpid());
-	// sigaction(SIGUSR1, &sa, NULL);
-	// sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 	{
 		sigaction(SIGUSR1, &sa, NULL);
 		sigaction(SIGUSR2, &sa, NULL);
+		//sleep(1);
 	}
 
 	return 0;
