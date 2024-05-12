@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   server_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/03 09:47:12 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/05/12 18:31:43 by atahtouh         ###   ########.fr       */
+/*   Created: 2024/05/12 18:29:02 by atahtouh          #+#    #+#             */
+/*   Updated: 2024/05/12 18:31:31 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "minitalk.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include <signal.h>
-
-int	ft_sqrt(int a, int b);
-#endif
+int	ft_sqrt(int a, int b)
+{
+	if (a == 1 || b == 0)
+		return (1);
+	else
+		return ((ft_sqrt(a, (b - 1))) * a);
+}

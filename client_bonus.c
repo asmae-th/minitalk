@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/03 20:14:24 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/05/12 17:46:52 by atahtouh         ###   ########.fr       */
+/*   Created: 2024/05/11 16:22:26 by atahtouh          #+#    #+#             */
+/*   Updated: 2024/05/12 17:47:16 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	pass_bit_server(pid_t pid, char c)
 	while (j < 8)
 	{
 		bit = (c >> j) & 1;
-		printf("%d\n", bit);
 		if (bit == 0)
 		{
 			kill(pid, SIGUSR1);
@@ -62,12 +61,23 @@ void	pass_bit_server(pid_t pid, char c)
 	}
 }
 
+void	handler(int signal)
+{
+	if (signal == SIGUSR1)
+		write(1, "ok\n", 3);
+}
+
 int	main(int ac, char **av)
 {
-	pid_t	pid;
-	char	*msg;
-	int		i;
+	pid_t				pid;
+	char				*msg;
+	int					i;
+	struct sigaction	sa;
 
+	sa.sa_handler = handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGUSR1, &sa, NULL);
 	if (ac == 3)
 	{
 		pid = ft_atoi(av[1]);

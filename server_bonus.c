@@ -1,24 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/06 11:25:29 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/05/11 16:34:42 by atahtouh         ###   ########.fr       */
+/*   Created: 2024/05/11 16:22:21 by atahtouh          #+#    #+#             */
+/*   Updated: 2024/05/12 18:32:06 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-
-int	ft_sqrt(int a, int b)
-{
-	if (a == 1 || b == 0)
-		return (1);
-	else
-		return ((ft_sqrt(a, (b - 1))) * a);
-}
 
 int	ft_binary_to_decimal(int bit, int count)
 {
@@ -32,6 +24,16 @@ void	initialize_handler(int *sum, int *count)
 {
 	*sum = 0;
 	*count = 0;
+}
+
+void	ft_write_msg(int *sum, int client_pid)
+{
+	if (*sum == '\0')
+	{
+		kill(client_pid, SIGUSR1);
+		usleep(100);
+		write(1, "\n", 1);
+	}
 }
 
 void	handler(int signal, siginfo_t *info, void *context)
@@ -57,8 +59,7 @@ void	handler(int signal, siginfo_t *info, void *context)
 	if (count == 8)
 	{
 		write(1, &sum, 1);
-		if (sum == '\0')
-			write(1, "\n", 1);
+		ft_write_msg(&sum, client_pid);
 		initialize_handler(&sum, &count);
 	}
 }
@@ -73,6 +74,7 @@ int	main(int ac, char **av)
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
 	printf("Je suis le serveur, mon PID est : %d\n", getpid());
+	usleep(100);
 	while (1)
 	{
 		sigaction(SIGUSR1, &sa, NULL);
