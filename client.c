@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 20:14:24 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/05/12 17:46:52 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/05/26 21:27:28 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,22 @@ int	ft_atoi(char *str)
 	sing = 1;
 	reslt = 0;
 	i = 0;
+	if (!str[i])
+		return (-1);
 	while ((str[i] == 32 || (str[i] >= 9 && str[i] <= 13)) && str[i] != '\0')
 		i++;
 	if (str[i] == 43 || str[i] == 45)
 	{
 		if (str[i] == 45)
-		{
 			sing = -sing;
-		}
 		i++;
 	}
 	while (str[i] != '\0' && str[i] >= 48 && str[i] <= 57)
-	{
-		reslt = reslt * 10 + str[i] - '0';
+		reslt = reslt * 10 + str[i++] - '0';
+	while ((str[i] == 32 || (str[i] >= 9 && str[i] <= 13)) && str[i] != '\0')
 		i++;
-	}
+	if (str[i] != '\0')
+		return (-1);
 	return (reslt * sing);
 }
 
@@ -48,15 +49,10 @@ void	pass_bit_server(pid_t pid, char c)
 	while (j < 8)
 	{
 		bit = (c >> j) & 1;
-		printf("%d\n", bit);
 		if (bit == 0)
-		{
 			kill(pid, SIGUSR1);
-		}
 		else if (bit == 1)
-		{
 			kill(pid, SIGUSR2);
-		}
 		usleep(100);
 		j++;
 	}
@@ -70,7 +66,14 @@ int	main(int ac, char **av)
 
 	if (ac == 3)
 	{
+		if (!av[1])
+			write(1, "error\n", 6);
 		pid = ft_atoi(av[1]);
+		if (pid == -1 || pid == 0)
+		{
+			write(1, "pid error\n", 9);
+			exit(1);
+		}
 		msg = av[2];
 		i = 0;
 		while (msg[i])
@@ -80,5 +83,6 @@ int	main(int ac, char **av)
 		}
 		pass_bit_server(pid, '\0');
 	}
-	return (0);
+	else
+		write(1, "nbr d'arg not 3\n", 16);
 }

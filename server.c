@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 11:25:29 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/05/11 16:34:42 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:52:08 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,16 @@ void	handler(int signal, siginfo_t *info, void *context)
 	}
 }
 
-int	main(int ac, char **av)
+int	main(void)
 {
 	struct sigaction	sa;
 
-	(void)ac;
-	(void)av;
 	sa.sa_sigaction = handler;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_SIGINFO;
-	printf("Je suis le serveur, mon PID est : %d\n", getpid());
+	write(1, "Je suis le serveur, mon PID est :", 33);
+	ft_putnbr_fd(getpid(), 1);
+	write(1, "\n", 1);
+	write(1, "==================================================", 50);
+	write(1, "\n", 1);
 	while (1)
 	{
 		sigaction(SIGUSR1, &sa, NULL);

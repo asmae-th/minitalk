@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 16:22:21 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/05/12 18:32:06 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:51:48 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_write_msg(int *sum, int client_pid)
 	if (*sum == '\0')
 	{
 		kill(client_pid, SIGUSR1);
-		usleep(100);
+		usleep(150);
 		write(1, "\n", 1);
 	}
 }
@@ -64,16 +64,16 @@ void	handler(int signal, siginfo_t *info, void *context)
 	}
 }
 
-int	main(int ac, char **av)
+int	main(void)
 {
 	struct sigaction	sa;
 
-	(void)ac;
-	(void)av;
 	sa.sa_sigaction = handler;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_SIGINFO;
-	printf("Je suis le serveur, mon PID est : %d\n", getpid());
+	write(1, "Je suis le serveur, mon PID est :", 33);
+	ft_putnbr_fd(getpid(), 1);
+	write(1, "\n", 1);
+	write(1, "==================================================", 50);
+	write(1, "\n", 1);
 	usleep(100);
 	while (1)
 	{
