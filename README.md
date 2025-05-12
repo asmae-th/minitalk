@@ -121,8 +121,7 @@ Example:
 
 ## 🧑‍💻 Author
 
-Made with 💙 by [Your Name]  
-Feel free to connect on [LinkedIn](https://www.linkedin.com) or check out more of my projects!
+Made with 💙 by [Asmae TAHTOUH]  
 
 ---
 
